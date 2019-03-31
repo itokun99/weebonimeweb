@@ -1,0 +1,93 @@
+.animePostComponent {
+  position :relative;
+  padding : 24px 0 ;
+}
+.animePostBody {
+  position : relative;
+  line-height: 1.6;
+}
+.animePostRow {
+  display: flex;
+  flex-wrap: wrap;
+}
+.animePostLeft {
+  width: 250px;
+}
+.animePostRight {
+  width: calc(100% - 250px);
+  padding-left : 24px;
+}
+.animePostBottom {
+  width: 100%;
+}
+/* anime left */
+.animeCover {
+  position: relative;
+  overflow: hidden;
+  margin-bottom : 14px;
+}
+.animeCoverPic {
+  width : 100%;
+}
+.animeInfo {
+  
+}
+.animeInfo ul {
+  padding : 0;
+  margin : 0;
+  list-style: none;
+  font-size: 14px;
+}
+.animeInfo ul > li > .infoTitle {
+  font-weight: 600;
+  margin-right : 10px;
+}
+.animeEpsList table {
+  width : 100%;
+  border: 1px solid #ddd;
+}
+.animeEpsList table, .animeEpsList table tr th, .animeEpsList table tr td  {
+  border-bottom: 1px solid #ddd;
+  border-collapse: collapse
+}
+.animeEpsList table th {
+  background-color:#7158e2;
+  color :#fff;
+  padding : 8px 14px;
+}
+.animeEpsList table td {
+  padding : 8px 14px;
+}
+
+@media (max-width: 1000px ){
+  .animePostBody {
+    padding : 0 14px;
+  }
+}
+@media (max-width: 640px){
+  .animePostLeft {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .animeCover {
+    width: 200px;
+  }
+  .animeInfo {
+    width: calc(100% - 200px);
+    padding-left: 14px;
+  }
+  .animePostRight {
+    width: 100%;
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 425px){
+  .animeCover {
+    width: 150px;
+  }
+  .animeInfo {
+    width: calc(100% - 150px);
+  }
+}
