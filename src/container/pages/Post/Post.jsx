@@ -11,6 +11,10 @@ class Post extends Component {
     anime : {}
   }
   
+  handleLinkToPlayer = (dataObj) => {
+    this.props.history.push(`/anime/${dataObj.anime_mal_id}/${dataObj.anime_title}/${dataObj.anime_play_id}/${dataObj.anime_play_title}`, dataObj.anime_play_data)
+  }
+  
   componentDidMount(){
     let anime = this.props.history.location.state;
     if(typeof(anime) !== "undefined"){
@@ -26,7 +30,6 @@ class Post extends Component {
       }
       AnimeAPI.getAnime(params).then((response) => {
         if(response.status === true){
-          console.log(response);
           let anime = response.data[0];
           this.setState({
             anime : anime
@@ -43,13 +46,18 @@ class Post extends Component {
   }
   
   render(){
-    // console.log(this)
     return(
       <div data-id={this.state.anime.anime_id} className={style.postSection}>
         <div className={style.postRow}>
            <div className={style.postLeft}>
             {
-              this.state.anime.hasOwnProperty("anime_id") ? <><Loading willHide={{transition : 1, opacity : 0, zIndex : -10}} /><AnimePost anime = {this.state.anime} /></> : <Loading /> 
+              this.state.anime.hasOwnProperty("anime_id") ? 
+              <>
+                <Loading willHide={{transition : 1, opacity : 0, zIndex : -10}} />
+                <AnimePost anime = {this.state.anime} linkToPlayer={(data) => this.handleLinkToPlayer(data)} />
+              </>
+              :
+              <Loading /> 
             }
            </div>
            <div className={style.postRight}>

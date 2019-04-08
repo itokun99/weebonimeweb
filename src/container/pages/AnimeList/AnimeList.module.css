@@ -41,6 +41,10 @@
   margin-bottom: 14px;
   border-bottom: 2px solid #ddd;
 }
+.animeListBlock h4 a {
+  text-decoration: none;
+  color : #7158e2;
+}
 .animeListRow {
   display: flex;
   flex-wrap: wrap;

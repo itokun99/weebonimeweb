@@ -15,17 +15,39 @@ const AnimePost = (props) => {
     .replace("& mdash;", "—")
   }
   const PlayList = (data) => {
+    // console.log(props.anime);
+    let linkParams = {
+      anime_mal_id : props.anime.anime_mal_id,
+      anime_title : props.anime.anime_title.split(" ").join("-").toLocaleLowerCase(),
+      anime_play_id : data.playdata.play_id,
+      anime_play_title: data.playdata.anime_play_title.split(" ").join("-").toLocaleLowerCase(),
+      anime_play_data : {
+        anime : anime,
+        currentPlay : data.playdata,
+        anotherList : anime.anime_play_data.play360,
+      },
+    }
     return(
-      <tr>
-        <td>{data.playdata.anime_play_title}</td>
-        <td style={{width : 150, textAlign : "center"}}>Watch!</td>
-      </tr>
+      // <tr>
+      //   <td>{data.playdata.anime_play_title}</td>
+      //   <td style={{width : 150, textAlign : "center"}} >Watch!</td>
+      // </tr>
+      <div onClick={() => props.linkToPlayer(linkParams)} className={style.epsList}>
+        <div className={style.epsListItem}>
+          <div style={{backgroundImage : `url(${data.playdata.anime_thumb})` }} className={style.epsListThumb}>
+            {/* <img src= title={data.playdata.anime_play_title} alt={data.playdata.anime_play_title} /> */}
+          </div>
+          <div className={style.epsListText}>
+            <span className={style.epsListTitle}>{data.playdata.anime_play_title}</span>
+          </div>
+        </div>
+      </div>
     )
   }
   
-  if(typeof(anime.anime_play_data) !== "undefined"){
-    console.log(anime.anime_play_data.play360);
-  }
+  // if(typeof(anime.anime_play_data) !== "undefined"){
+  //   console.log(anime.anime_play_data.play360);
+  // }
   return(
     <div className={style.animePostComponent}>
       <div className={style.animePostBody}>
@@ -55,32 +77,18 @@ const AnimePost = (props) => {
               <p dangerouslySetInnerHTML={{__html : anime.anime_sinopsis}}></p>
             </div>
             <div className={style.animeEpsList}>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Episode</th>
-                    <th>Link</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {typeof(anime.anime_play_data) !== "undefined" ?
-                  (anime.anime_play_data.play360.length > 0) ?
-                    anime.anime_play_data.play360.map((data) => {
-                      return(
-                        <PlayList key={data.play_id} playdata={data} />
-                      )
-                    })
-                  :
-                    <tr>
-                      <td>Tidak ada data apapun</td><td style={{textAlign:"center"}}><span>Download</span></td>
-                    </tr>  
+              {typeof(anime.anime_play_data) !== "undefined" ?
+                (anime.anime_play_data.play360.length > 0) ?
+                  anime.anime_play_data.play360.map((data) => {
+                    return(
+                      <PlayList key={data.play_id} playdata={data} />
+                    )
+                  })
                 :
-                <tr>
-                  <td>Tidak ada data apapun</td><td><span>Download</span></td>
-                </tr>
-                }
-                </tbody>
-              </table>
+                  <div style={{textAlign:"center"}}>Tidak ada data apapun</div>
+              :
+                <div style={{textAlign:"center"}}>Tidak ada data apapun</div>
+              }
             </div>
           </div>
           <div className={style.animePostBottom}>

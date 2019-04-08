@@ -24,6 +24,12 @@ class Home extends Component {
   handleLinkToPost = (anime_mal_id, anime_title, anime_data) => {
      this.props.history.push(`/anime/${anime_mal_id}/${anime_title}`, anime_data);
   }
+  
+  handleLinkToPlayer = (anime_mal_id, anime_title,anime_play_id, anime_play_title, anime_data) => {
+    this.props.history.push(`/anime/${anime_mal_id}/${anime_title}/${anime_play_id}/${anime_play_title}`, anime_data);
+  }
+  
+  
   componentDidMount(){
     this.handleAnimeData();
     document.title = "Weebonime - Nonton dan Download Anime Sepuasnya";
@@ -40,13 +46,14 @@ class Home extends Component {
         <AnimeStack
           title="Latest Update"
           animeData = {this.state.animeData}
+          linkToPlayer = {(anime_mal_id, anime_title, anime_play_id,anime_play_title, anime_data) => this.handleLinkToPlayer(anime_mal_id, anime_title, anime_play_id, anime_play_title, anime_data)}
           linkToPost = {(mal_id, anime_title, anime) => this.handleLinkToPost(mal_id, anime_title, anime)} 
         />
-        <AnimeStack
-          title="Latest Update"
+        {/* <AnimeStack
+          title="Popular Anime"
           animeData = {this.state.animeData}
           linkToPost = {(mal_id, anime_title, anime) => this.handleLinkToPost(mal_id, anime_title, anime)} 
-        />
+        /> */}
       </div>
     );
   }

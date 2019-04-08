@@ -40,7 +40,12 @@ const AnimeStack  = (props) => {
             anime_data.length > 0 ?
             anime_data.map((anime, index) => {
               return(
-                <AnimeCard linkToPost={ (mal_id, anime_title, anime) => props.linkToPost(mal_id, anime_title, anime)} key={index} animeData={anime} />
+                <AnimeCard
+                  linkToPlayer = {(anime_mal_id, anime_title, anime_play_id, anime_play_title, anime_data) => props.linkToPlayer(anime_mal_id, anime_title, anime_play_id,anime_play_title, anime_data)}
+                  linkToPost={(mal_id, anime_title, anime) => props.linkToPost(mal_id, anime_title, anime)}
+                  key={index}
+                  animeData={anime}
+                />
               )    
             })
             :

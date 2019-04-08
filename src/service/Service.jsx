@@ -1,6 +1,7 @@
 // setting service
 const config = {
-  onlinePath : "http://192.168.100.7/weebonime/",
+  onlinePath : "http://192.168.100.3/weebonime/",  
+  // onlinePath : "http://weebonime.jalanpelajar.com/",
   offlinePath : "http://localhost/weebonime/",
   isOnline : true,
 }
@@ -40,8 +41,14 @@ const getAnime = (obj = null) => {
     if(typeof(obj.order_by) === "undefined" || obj.order_by === "" || obj.order_by === null){
       obj.order_by = null
     }
+    if(typeof(obj.listed) === "undefined" || obj.listed === "" || obj.listed === null){
+      obj.listed = null
+    }
+    if(typeof(obj.genre) === "undefined" || obj.genre === "" || obj.genre === null){
+      obj.genre = null
+    }
   }
-  let path = `api/animes${obj === null ? "" : obj.id === null ? "" : "?anime_id=" + obj.id}${obj === null ? "" : obj.mal_id === null ? "" : obj.id === null ? "?anime_mal_id=" + obj.mal_id : "&anime_mal_id=" + obj.mal_id}${obj === null ? "" : obj.order_by === null ? "" : obj.id === null && obj.mal_id === null ? "?order_by=" + obj.order_by :  "&order_by=" + obj.order_by  }`;
+  let path = `api/animes${obj === null ? "" : obj.id === null ? "" : "?anime_id=" + obj.id}${obj === null ? "" : obj.mal_id === null ? "" : obj.id === null ? "?anime_mal_id=" + obj.mal_id : "&anime_mal_id=" + obj.mal_id}${obj === null ? "" : obj.order_by === null ? "" : obj.id === null && obj.mal_id === null ? "?order_by=" + obj.order_by :  "&order_by=" + obj.order_by  }${obj === null ? "" : obj.listed === null ? "" : obj.id === null && obj.mal_id === null && obj.order_by === null ? "?listed=" + obj.listed : "&listed=" + obj.listed}${obj === null ? "" : obj.genre === null ? "" : obj.id === null && obj.mal_id === null && obj.order_by === null && obj.listed === null ? "?genre=" + obj.genre : "&genre=" + obj.genre}`;
   
   return Get(path, config.isOnline);
 }

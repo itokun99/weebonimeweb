@@ -22,7 +22,7 @@ const GlobalProvider = (ChildProviderComponent) => {
       dispatch = () => {
 
       }
-      
+      // anime counter untuk update otomatis
       handleAnimeCounter = () => {
         AnimeAPI.getAnimeCounter().then((response) => {
           console.log(response);
@@ -32,9 +32,13 @@ const GlobalProvider = (ChildProviderComponent) => {
           console.log(error)
         })
       }
-
+      // show anime list pertama kali
       handleGetAnime = () => {
-        AnimeAPI.getAnime()
+        let params = {
+          order_by : "date_update",
+          listed : "asc",
+        }
+        AnimeAPI.getAnime(params)
         .then((response) => {
           if(response.status === true){
             let anime = response.data
@@ -53,6 +57,7 @@ const GlobalProvider = (ChildProviderComponent) => {
         })
       }
       
+      // handle untuk generate anime info dari MAL
       handleGetAnimeFromMal = (id) => {
         AnimeAPI.getAnimeFromMal(id).then((response) => {
           if(response.status === true){
@@ -74,14 +79,42 @@ const GlobalProvider = (ChildProviderComponent) => {
           console.log(error)
         })
       }
-
+      
+      // send props
       handleSendAnimeProps = () => {
         let hasUpdate = true
         return hasUpdate
       }
+      
+      handleGapi = () => {
+        const gapiScript = document.createElement('script')
+        gapiScript.src = 'https://apis.google.com/js/api.js?onload=onGapiLoad'
+        // window.onGapiLoad = () => {
+        //   window.gapi.load('client', {
+        //     callback : () => {
+        //       this.testGoogleAPI();
+        //     },
+        //     oneerror : () => {
+        //       alert('Gapi Client Failed Loaded')
+        //     },
+        //     timeout : 5000,
+        //     ontimeout : () => {
+        //       alert("Timeout")
+        //     }
+        //   });
+        // }
+        document.body.appendChild(gapiScript)
+      }
+      handlePlyrScript = () => {
+        const plyrscript = document.createElement('script');
+        plyrscript.src = 'https://cdn.plyr.io/3.5.2/plyr.polyfilled.js';      
+        
+        document.body.appendChild(plyrscript);
+      }
 
       componentDidMount(){
-        
+        // this.handleGapi();
+        // this.handlePlyrScript();
       }
 
       componentDidUpdate(){
@@ -97,6 +130,7 @@ const GlobalProvider = (ChildProviderComponent) => {
       }
 
       render(){
+        // global state context
         let GlobalState = {
           RootState : this.state,
           RootAction : this.dispatch, 
