@@ -7,7 +7,7 @@ const SearchField = (props) => {
   return(
     <div className={style.searchSection}>
       <h4>Cari Anime</h4>
-      <input onChange={(e) => props.onSearch(e.target.value)} type="text" placeholder="Search.." name="search_input" />
+      <input onChange={(e) => props.onSearch(e.target.value)} type="text" placeholder="Anime, Genre, Rating, dll.." name="search_input" />
     </div>
   );
 }
@@ -19,7 +19,8 @@ class AnimeList extends Component {
       animes : [],
       animesOnSearch : [],
       onSearch : false,
-      inputText : ""
+      inputText : "",
+      simpleMode : false,
     }
   }
   
@@ -47,15 +48,49 @@ class AnimeList extends Component {
   handleLinkToPost = (anime_mal_id, anime_title, anime_data) => {
     this.props.history.push(`/anime/${anime_mal_id}/${anime_title}`, anime_data);
   }
+  handleLinkToPlayer = (anime_mal_id, anime_title,anime_play_id, anime_play_title, anime_data) => {
+    this.props.history.push(`/anime/${anime_mal_id}/${anime_title}/${anime_play_id}/${anime_play_title}`, anime_data);
+  }
   
   handleSearch = (inputText) => {
     if(inputText !== ""){
       let resultAnime = [];
       let animes = [...this.state.animes];
       animes.forEach((anime) => {
-        let searchResult = anime.anime_title.toLowerCase().indexOf(inputText.toLowerCase()) 
+        let searchResult = anime.anime_title.toLowerCase().indexOf(inputText.toLowerCase());
+        let searchResultByGenre = anime.anime_genre.toLowerCase().indexOf(inputText.toLowerCase());
+        let searchResultByScore = anime.anime_score.toLowerCase().indexOf(inputText.toLowerCase());
+        let searchResultByRilis = anime.anime_release.toLowerCase().indexOf(inputText.toLowerCase());
+        let searchResultByStudio = anime.anime_studios.toLowerCase().indexOf(inputText.toLowerCase());
+        let searchResultBySinopsis = anime.anime_sinopsis.toLowerCase().indexOf(inputText.toLowerCase());
+        let ongoing = "ongoing";
+        let completed = "completed";
+        let searchResultByOngoing = ongoing.indexOf(inputText.toLowerCase());
+        let searchResultByCompleted = completed.indexOf(inputText.toLowerCase());
+        let searchResultByStatus = anime.anime_status.toLowerCase().indexOf(inputText.toLowerCase());
+        
         if(searchResult !== -1 && searchResult !== "undefined"){
           resultAnime.push(anime)
+        }else if(searchResultByGenre !== -1 && searchResultByGenre !== "undefined"){
+          resultAnime.push(anime)          
+        }else if(searchResultByScore !== -1 && searchResultByScore !== "undefined"){
+          resultAnime.push(anime)          
+        }else if(searchResultByRilis !== -1 && searchResultByRilis !== "undefined"){
+          resultAnime.push(anime)          
+        }else if(searchResultByStudio !== -1 && searchResultByStudio !== "undefined"){
+          resultAnime.push(anime)          
+        }else if(searchResultBySinopsis !== -1 && searchResultBySinopsis !== "undefined"){
+          resultAnime.push(anime)          
+        }else if(searchResultByOngoing !== -1 && searchResultByOngoing !== "undefined"){
+          if(anime.anime_status.toLowerCase() === "currently airing"){
+            resultAnime.push(anime)
+          }
+        }else if(searchResultByCompleted !== -1 && searchResultByCompleted !== "undefined"){
+          if(anime.anime_status.toLowerCase() === "finished airing"){
+            resultAnime.push(anime)
+          }
+        }else if(searchResultByStatus !== -1 && searchResultByStatus !== "undefined"){
+          resultAnime.push(anime)          
         }
       })
       this.setState({
@@ -72,9 +107,16 @@ class AnimeList extends Component {
     }
   }
   
+  handleMode = () => {
+    this.setState({
+      simpleMode : !this.state.simpleMode
+    })
+  }
+  
   componentDidMount(){
     this.handleGetAnimes();
     document.title = "Anime List - Cari Daftar Anime Favorit"
+    document.getElementsByTagName('html')[0].scrollTop = 0
   }
   
   render(){
@@ -105,6 +147,21 @@ class AnimeList extends Component {
           <SearchField onSearch={(inputText) => this.handleSearch(inputText)} />
         </div>
         <div className={style.animeListBody}>
+          <div className={style.mode}>
+            <div onClick={this.handleMode} className={style.btnWrapper}>
+              {this.state.simpleMode ? 
+                <>
+                  <button >Card</button>
+                  <button className={style.active}>Simple</button>
+                </>
+                :
+                <>
+                  <button className={style.active}>Card</button>
+                  <button>Simple</button>
+                </> 
+                }
+            </div>
+          </div>
           <div className={style.animeListBlock}>
             {
               this.state.onSearch?
@@ -112,9 +169,19 @@ class AnimeList extends Component {
                   <div className={style.animeListRow}>
                   {
                     this.state.animesOnSearch.map((anime) => {
-                      return(
-                        <AnimeCard key={anime.anime_mal_id} animeData = {anime} linkToPost={(mal_id, anime_title, anime) => this.handleLinkToPost(mal_id, anime_title, anime)} />
-                      );
+                      if(this.state.simpleMode){
+                        return(
+                          <li key={anime.anime_mal_id} onClick={() => this.handleLinkToPost(anime.anime_mal_id, anime.anime_title, anime)}>{anime.anime_title}</li>
+                        )
+                      } else {
+                        return(
+                          <AnimeCard
+                            key={anime.anime_mal_id}
+                            animeData = {anime}
+                            linkToPlayer = {(anime_mal_id, anime_title,anime_play_id, anime_play_title, anime_data) => this.handleLinkToPlayer(anime_mal_id, anime_title,anime_play_id, anime_play_title, anime_data)}
+                            linkToPost={(mal_id, anime_title, anime) => this.handleLinkToPost(mal_id, anime_title, anime)} />
+                        );    
+                      }
                     })  
                   }
                   </div>
@@ -138,9 +205,19 @@ class AnimeList extends Component {
                         {
                           this.state.animes.map((anime, index) => {
                             if(anime.anime_title[0].toUpperCase() === alpha){
-                              return(
-                                <AnimeCard key={anime.anime_mal_id} animeData = {anime} linkToPost={(mal_id, anime_title, anime) => this.handleLinkToPost(mal_id, anime_title, anime)} />
-                              )
+                              if(this.state.simpleMode){
+                                 return(
+                                   <li key={anime.anime_mal_id} onClick={() => this.handleLinkToPost(anime.anime_mal_id, anime.anime_title, anime)}>{anime.anime_title}</li>
+                                 )
+                              } else {
+                                return(
+                                  <AnimeCard
+                                    key={anime.anime_mal_id}
+                                    animeData = {anime}
+                                    linkToPlayer = {(anime_mal_id, anime_title,anime_play_id, anime_play_title, anime_data) => this.handleLinkToPlayer(anime_mal_id, anime_title,anime_play_id, anime_play_title, anime_data)}
+                                    linkToPost={(mal_id, anime_title, anime) => this.handleLinkToPost(mal_id, anime_title, anime)} />
+                                )
+                              }
                             } else {
                               return "";
                             }

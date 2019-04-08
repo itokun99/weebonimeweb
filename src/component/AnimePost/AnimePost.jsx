@@ -18,7 +18,7 @@ const AnimePost = (props) => {
     // console.log(props.anime);
     let linkParams = {
       anime_mal_id : props.anime.anime_mal_id,
-      anime_title : props.anime.anime_title.split(" ").join("-").toLocaleLowerCase(),
+      anime_title : props.anime.anime_title.split(" ").join("-").toLocaleLowerCase().replace("!", "").replace("?", "").replace(":", ""),
       anime_play_id : data.playdata.play_id,
       anime_play_title: data.playdata.anime_play_title.split(" ").join("-").toLocaleLowerCase(),
       anime_play_data : {

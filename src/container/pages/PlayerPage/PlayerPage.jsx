@@ -73,6 +73,7 @@ class PlayerPage extends Component {
       let play_id = this.props.match.params.play_id;
       this.handleGetAnimeData(mal_id, play_id);
     }
+    document.getElementsByTagName('html')[0].scrollTop = 0
   }
   
   render(){

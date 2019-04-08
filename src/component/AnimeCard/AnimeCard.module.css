@@ -9,6 +9,7 @@
   width: 100%;
   cursor: pointer;
   transition: .3s;
+  border-radius: 4px;
 }
 .animeCardItem:hover {
   transform: translateY(-5px);

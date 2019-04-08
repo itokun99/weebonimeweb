@@ -16,6 +16,7 @@ class Post extends Component {
   }
   
   componentDidMount(){
+    document.getElementsByTagName('html')[0].scrollTop = 0
     let anime = this.props.history.location.state;
     if(typeof(anime) !== "undefined"){
       this.setState({

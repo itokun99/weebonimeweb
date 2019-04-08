@@ -33,6 +33,7 @@ class Home extends Component {
   componentDidMount(){
     this.handleAnimeData();
     document.title = "Weebonime - Nonton dan Download Anime Sepuasnya";
+    document.getElementsByTagName('html')[0].scrollTop = 0
   }
   
   componentWillReceiveProps(){

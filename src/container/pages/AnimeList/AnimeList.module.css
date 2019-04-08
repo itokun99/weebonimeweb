@@ -49,6 +49,44 @@
   display: flex;
   flex-wrap: wrap;
 }
+.animeListRow li {
+  list-style: none;
+  width: 50%;
+  padding: 4px 14px;
+  cursor: pointer;
+  transition: .3s;
+  font-weight: 500;
+}
+.animeListRow li:hover {
+  color : #7158e2;
+}
+
+.mode {
+  text-align: right;
+  padding:14px;
+}
+.btnWrapper {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1)
+}
+.btnWrapper button {
+  background-color: #eee;
+  color: #444;
+  font-size: 14px;
+  font-weight: bold;
+  border:none;
+  display: inline-block;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.btnWrapper button.active {
+  background-color: #7158e2;
+  color: #fff;
+}
 
 @media (max-width: 640px){
   .animeListBlock {
