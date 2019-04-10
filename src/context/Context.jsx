@@ -37,6 +37,7 @@ const GlobalProvider = (ChildProviderComponent) => {
         let params = {
           order_by : "date_update",
           listed : "asc",
+          limit : 10,
         }
         AnimeAPI.getAnime(params)
         .then((response) => {

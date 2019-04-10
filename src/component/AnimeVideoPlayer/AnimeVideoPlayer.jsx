@@ -1,26 +1,11 @@
 import React, {Component} from 'react';
-import styles from './AnimeVideoPlayer.module.css';
+import './AnimeVideoPlayer.css';
 import {Player} from 'video-react';
 import "../../../node_modules/video-react/dist/video-react.css";
+import {Icon} from 'react-icons-kit';
+import {ic_play_circle_filled} from 'react-icons-kit/md/ic_play_circle_filled'
+import {ic_pause_circle_filled} from 'react-icons-kit/md/ic_pause_circle_filled'
 import ReactPlayer from 'react-player';
-
-
-// const AnimeVideoPlayer = (props) => {  
-//   return(
-//     <div className={styles.videoSection}>
-//       <div className={styles.videoResponsive}>
-//         {/* <Player
-//           autoPlay
-//           playsInline
-//           poster = ""
-//           src={props.video.anime_play_link}
-//         /> */}
-
-//       </div>
-//     </div>
-//   );
-// }
-
 class AnimeVideoPlayer extends Component {
   state = {
     url: null,
@@ -141,12 +126,12 @@ class AnimeVideoPlayer extends Component {
     const SEPARATOR = ' · ';
     
     return(
-      <div className={styles.customPlayer}>
-        <div className={styles.playerWrapper}>
+      <div className="customPlayer">
+        <div className="playerWrapper">
           <ReactPlayer
             ref={this.ref}
             autoPlay = {false}
-            className={styles.reactPlayer}
+            className="reactPlayer"
             width='100%'
             height='100%'
             url={this.props.video.anime_play_link}
@@ -172,15 +157,31 @@ class AnimeVideoPlayer extends Component {
             onDuration={this.onDuration}
           />
         </div>
-        <div className={styles.customPlayerLayer}>
-          <div className={styles.customControl}>
-            <div className={styles.leftControl}>
-              <span className={styles.playButton} onClick={this.playToggle}>{this.state.playing ? "Jeda" : "Mainkan"}</span>
+        <div className={`customPlayerLayer ${playing ? "": "stoped"}`}>
+          <span className="logoPlayer">codepelajar.com</span>
+          <span onClick={this.playToggle} className="playIcon">
+            <Icon icon={playing ? ic_pause_circle_filled :ic_play_circle_filled} size={80} />
+          </span>
+          <div className="customControl">
+            <div className="leftControl">
+              <span className="playButton" onClick={this.playToggle}>{this.state.playing ? "Jeda" : "Mainkan"}</span>
             </div>
-            <div className={styles.sliderControl}>
-              
+            <div className="sliderControl">
+              <input
+                className="sliderSeek"
+                type='range'
+                min={0}
+                max={1}
+                step='any'
+                value={played}
+                onMouseDown={this.onSeekMouseDown}
+                onChange={this.onSeekChange}
+                onMouseUp={this.onSeekMouseUp}
+              />
+              <progress className="playedProgress" max={1} value={played} />
+              <progress className="loadedProgress" max={1} value={loaded} />
             </div>
-            <div className={styles.rightControl}>
+            <div className="rightControl">
               
             </div>
           </div>

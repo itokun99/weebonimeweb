@@ -33,7 +33,7 @@ class Header extends Component  {
           </div>
           <div className={style.headerRight}>
             <nav className={this.state.menuToggle ? style.headerNavigation + " " + style.active : style.headerNavigation }>
-              <ul>
+              <ul onClick={() => this.handleMenuToggle() }>
                 <li className={style.cureentNav}><Link to='/'>Home</Link></li>
                 <li><Link to='/anime-list'>AnimeList</Link></li>
                 <li><Link to='/'>About</Link></li>

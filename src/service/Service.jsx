@@ -19,12 +19,16 @@ const Get = (path, status) => {
       if(response.ok){
         resolve(response.json());
       } else {
-        console.log(response)
-        reject(new Error('error'))
+        // console.log("ini", response)
+        if(response.status === 404){
+          resolve(response.json());
+        }
+        // reject(new Error('error'))
       }
     },  (error) => {
-      console.log(error)
-      reject(new Error(error))
+      console.log(error);
+      resolve(error.json())
+      // reject(new Error(error))
     })
   });
   return promise;
@@ -47,8 +51,14 @@ const getAnime = (obj = null) => {
     if(typeof(obj.genre) === "undefined" || obj.genre === "" || obj.genre === null){
       obj.genre = null
     }
+    if(typeof(obj.limit) === "undefined" || obj.limit === "" || obj.limit === null){
+      obj.limit = null
+    }
+    if(typeof(obj.limit_offset) === "undefined" || obj.limit_offset === "" || obj.limit_offset === null){
+      obj.limit_offset = null
+    }
   }
-  let path = `api/animes${obj === null ? "" : obj.id === null ? "" : "?anime_id=" + obj.id}${obj === null ? "" : obj.mal_id === null ? "" : obj.id === null ? "?anime_mal_id=" + obj.mal_id : "&anime_mal_id=" + obj.mal_id}${obj === null ? "" : obj.order_by === null ? "" : obj.id === null && obj.mal_id === null ? "?order_by=" + obj.order_by :  "&order_by=" + obj.order_by  }${obj === null ? "" : obj.listed === null ? "" : obj.id === null && obj.mal_id === null && obj.order_by === null ? "?listed=" + obj.listed : "&listed=" + obj.listed}${obj === null ? "" : obj.genre === null ? "" : obj.id === null && obj.mal_id === null && obj.order_by === null && obj.listed === null ? "?genre=" + obj.genre : "&genre=" + obj.genre}`;
+  let path = `api/animes${obj === null ? "" : obj.id === null ? "" : "?anime_id=" + obj.id}${obj === null ? "" : obj.mal_id === null ? "" : obj.id === null ? "?anime_mal_id=" + obj.mal_id : "&anime_mal_id=" + obj.mal_id}${obj === null ? "" : obj.order_by === null ? "" : obj.id === null && obj.mal_id === null ? "?order_by=" + obj.order_by :  "&order_by=" + obj.order_by  }${obj === null ? "" : obj.listed === null ? "" : obj.id === null && obj.mal_id === null && obj.order_by === null ? "?listed=" + obj.listed : "&listed=" + obj.listed}${obj === null ? "" : obj.genre === null ? "" : obj.id === null && obj.mal_id === null && obj.order_by === null && obj.listed === null ? "?genre=" + obj.genre : "&genre=" + obj.genre}${obj === null ? "" : obj.limit === null ? "" : obj.id === null && obj.mal_id === null && obj.order_by === null && obj.listed === null && obj.genre === null ? "?limit=" + obj.limit : "&limit=" + obj.limit}${obj === null ? "" : obj.limit_offset === null ? "" : obj.id === null && obj.mal_id === null && obj.order_by === null && obj.listed === null && obj.genre === null && obj.limit ? "?limit_offset=" + obj.limit_offset : "&limit_offset=" + obj.limit_offset}`;
   
   return Get(path, config.isOnline);
 }

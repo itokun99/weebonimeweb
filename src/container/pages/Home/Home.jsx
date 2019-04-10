@@ -3,11 +3,14 @@ import style from './Home.module.css';
 import ContentWrapper from '../../template/ContentWrapper/ContentWrapper'
 import AnimeStack from '../../../component/AnimeStack/AnimeStack';
 import {GlobalConsumer} from '../../../context/Context';
+import AnimeAPI from '../../../service/Service';
 class Home extends Component {
   constructor(props){
     super(props)
     this.state = {
-      animeData : []
+      animeData : [],
+      emptyList : false,
+      isLoading : false,
     }
   }
 
@@ -19,6 +22,43 @@ class Home extends Component {
         animeData : animeData
        })
     }, 100 )
+  }
+
+  handleLoadMore = () => {
+    let copyState = [...this.state.animeData];
+    let newState = [];
+    let offsetLength = copyState.length;
+    let params = {
+      order_by : "date_update",
+      listed : "asc",
+      limit_offset : offsetLength,
+      limit : 10, 
+    }
+    this.setState({
+      isLoading : true
+    }, () => {
+      AnimeAPI.getAnime(params).then((response) => {
+        if(response.status === true){
+          newState = response.data;
+          newState.reverse();
+          this.setState({
+            animeData : [...copyState, ...newState],
+            isLoading : false
+          }, () => {
+            console.log(this.state.animeData);
+          });
+        } else {
+          console.log(response)
+          if(response.statusCode === 404){
+            this.setState({
+              emptyList : true,
+              isLoading : false,
+            })
+          }
+        }
+      })
+    })
+    
   }
   
   handleLinkToPost = (anime_mal_id, anime_title, anime_data) => {
@@ -41,14 +81,16 @@ class Home extends Component {
   }
 
   render(){
-    // alert("test");
     return(
       <div className={style.homeComponent}>
         <AnimeStack
           title="Latest Update"
           animeData = {this.state.animeData}
           linkToPlayer = {(anime_mal_id, anime_title, anime_play_id,anime_play_title, anime_data) => this.handleLinkToPlayer(anime_mal_id, anime_title, anime_play_id, anime_play_title, anime_data)}
-          linkToPost = {(mal_id, anime_title, anime) => this.handleLinkToPost(mal_id, anime_title, anime)} 
+          linkToPost = {(mal_id, anime_title, anime) => this.handleLinkToPost(mal_id, anime_title, anime)}
+          onLoadMore = {this.handleLoadMore}
+          emptyList = {this.state.emptyList}
+          isLoading = {this.state.isLoading}
         />
         {/* <AnimeStack
           title="Popular Anime"

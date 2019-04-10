@@ -87,7 +87,17 @@ const AnimeStack  = (props) => {
         </div>
       </div>
       <div className={style.stackFooter}>
-
+        <div className={style.btnWrapper}>
+          {
+            props.isLoading ? 
+              <button className={style.btnLoadMoreEmpty}>Please Wait...</button>
+            :
+              props.emptyList ?
+                <button className={style.btnLoadMoreEmpty}>Loaded</button>
+              :
+                <button onClick={() => props.onLoadMore()} className={style.btnLoadMore}>Show More</button>
+          }
+        </div>
       </div>
     </div>
   );
